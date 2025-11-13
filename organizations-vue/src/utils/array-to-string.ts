@@ -1,0 +1,1 @@
+export const arrayToString = (arr: string[]) => arr.join(', ')
