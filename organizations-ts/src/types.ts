@@ -2,6 +2,8 @@
  * Организация (юр. лицо или компания), включая контактные данные и юридический адрес.
  */
 export interface Organization extends Record<string, unknown> {
+	id: string
+
 	/** Название организации (например: "ООО Ромашка") */
 	name: string
 
@@ -24,6 +26,5 @@ export interface Organization extends Record<string, unknown> {
 	}
 }
 
-export type TableHeading<T> = { key: keyof T, label: string, sortable?: boolean }
-
+export type TableHeading<T> = { key: keyof T, label: string, sortable?: boolean, hidden?: boolean }
 export type SortOrder = 'asc' | 'desc'

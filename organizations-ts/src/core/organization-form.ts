@@ -1,3 +1,5 @@
+import type { Organization } from '../types.ts'
+
 /**
  * Создаёт HTML-форму для добавления организации и управляет её состоянием.
  *
@@ -14,13 +16,17 @@
  * document.body.append(form)
  * ```
  */
-export function createForm(onSubmit?: (formData: FormData) => void) {
+interface FormOptions {
+	onSubmit?: (formData: FormData, isEdit: boolean) => void
+}
+export function createForm(options: FormOptions = {}) {
 	// Создаём сам элемент <form>
 	const form = document.createElement('form')
 	form.setAttribute('class', 'space-y-4')
 
 	// Флаг для блокировки кнопки "Добавить", пока есть пустые поля
 	let disabled = false
+	let isEdit = false
 
 	/**
 	 * Массив полей, из которых будет состоять форма.
@@ -30,22 +36,42 @@ export function createForm(onSubmit?: (formData: FormData) => void) {
 	 * - isEmpty: флаг, показывающий, заполнено ли поле
 	 */
 	const fields = [
-		{ name: 'name', placeholder: 'Название организации', isEmpty: true },
-		{ name: 'directorFullName', placeholder: 'ФИО директора', isEmpty: true },
-		{ name: 'tel', placeholder: 'Номер телефона', isEmpty: true },
-		{ name: 'city', placeholder: 'Город', isEmpty: true },
-		{ name: 'street', placeholder: 'Улица', isEmpty: true },
-		{ name: 'house', placeholder: 'Дом', isEmpty: true },
+		{ name: 'id', placeholder: 'ID', isEmpty: false, hidden: true },
+		{
+			name: 'name',
+			placeholder: 'Название организации',
+			isEmpty: true,
+			hidden: false,
+		},
+		{
+			name: 'directorFullName',
+			placeholder: 'ФИО директора',
+			isEmpty: true,
+			hidden: false,
+		},
+		{
+			name: 'tel',
+			placeholder: 'Номер телефона',
+			isEmpty: true,
+			hidden: false,
+		},
+		{ name: 'city', placeholder: 'Город', isEmpty: true, hidden: false },
+		{ name: 'street', placeholder: 'Улица', isEmpty: true, hidden: false },
+		{ name: 'house', placeholder: 'Дом', isEmpty: true, hidden: false },
 	]
 
 	// Генерируем разметку для полей ввода
-	fields.forEach(({ name, placeholder }) => {
-		form.innerHTML += `<input name="${name}" class="ui-input" placeholder="${placeholder}" />`
+	fields.forEach(({ name, placeholder, hidden }) => {
+		if (hidden) {
+			form.innerHTML += `<input name="${name}" type="hidden" />`
+		} else {
+			form.innerHTML += `<input name="${name}" class="ui-input" placeholder="${placeholder}" />`
+		}
 	})
 
 	// Добавляем кнопку отправки
 	form.innerHTML += `
-		<button disabled type="submit" class="ui-button">Добавить</button>
+		<button disabled type="submit" class="ui-button">Сохранить</button>
 	`
 
 	// Находим кнопку для последующего включения/отключения
@@ -55,9 +81,22 @@ export function createForm(onSubmit?: (formData: FormData) => void) {
 	 * Обработчик события `input`
 	 * — отслеживает заполненность всех полей и включает кнопку, если форма заполнена.
 	 */
-	form.addEventListener('input', (event: Event) => {
-		const target = event.target as HTMLInputElement
+	form.addEventListener('input', (event: Event) =>
+		validate(event.target as HTMLInputElement),
+	)
 
+	/**
+	 * Обработчик отправки формы
+	 * — предотвращает перезагрузку страницы и вызывает переданный callback.
+	 */
+	form.addEventListener('submit', (event) => {
+		event.preventDefault()
+		options?.onSubmit?.(new FormData(form), isEdit)
+		isEdit = false
+		form.reset()
+	})
+
+	function validate(target: HTMLInputElement) {
 		// Обновляем флаг isEmpty для конкретного поля
 		fields.forEach((field) => {
 			if (field.name === target.name) {
@@ -74,22 +113,29 @@ export function createForm(onSubmit?: (formData: FormData) => void) {
 		} else {
 			submitButton?.removeAttribute('disabled')
 		}
-	})
+	}
 
-	/**
-	 * Обработчик отправки формы
-	 * — предотвращает перезагрузку страницы и вызывает переданный callback.
-	 */
-	form.addEventListener('submit', (event) => {
-		event.preventDefault()
+	function setForm(data: Organization) {
+		fields.forEach(({ name }) => {
+			const input = form.querySelector<HTMLInputElement>(`[name="${name}"]`)
 
-		if (typeof onSubmit === 'function') {
-			onSubmit(new FormData(form))
-		}
+			if (input) {
+				if (['city', 'street', 'house'].includes(name)) {
+					input.value =
+						data.address[name as keyof Organization['address']] || ''
+				} else {
+					input.value = (data[name] as string) || ''
+				}
 
-		form.reset()
-	})
+				validate(input)
+			}
+		})
 
-	// Возвращаем готовую форму
-	return form
+		isEdit = true
+	}
+
+	return {
+		form,
+		setForm,
+	}
 }

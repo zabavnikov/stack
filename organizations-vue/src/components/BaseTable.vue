@@ -80,7 +80,7 @@ function doSort(key: keyof T) {
 					>
 						{{ heading.label }}
 						<span v-if="sortKey === heading.key">
-							{{ sortOrder === 'asc' ? '↑' : '↓' }}
+							{{ sortOrder === 'asc' ? '▲' : '▼' }}
 						</span>
 					</button>
 

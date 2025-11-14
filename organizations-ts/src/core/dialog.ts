@@ -4,6 +4,7 @@
  */
 interface Dialog {
 	close: () => void
+	open: () => void
 }
 
 /**
@@ -31,47 +32,7 @@ export function createDialog(
 
 	if (trigger) {
 		// Добавляем слушатель открытия по клику
-		trigger.addEventListener('click', () => {
-			// Создаём контейнер для диалога
-			const dialog = document.createElement('div')
-
-			// Устанавливаем базовые атрибуты и классы для затемнения фона и центрирования окна
-			dialog.setAttribute('id', 'dialog')
-			dialog.setAttribute(
-				'class',
-				'fixed inset-0 bg-slate-600/70 flex items-center justify-center',
-			)
-
-			// Вставляем разметку модального окна
-			dialog.innerHTML = `
-				<div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-					<!-- Заголовок и кнопка закрытия -->
-					<div class="flex justify-between items-center mb-6">
-						<h2 class="text-2xl">Добавить организацию</h2>
-						<div data-close-button-slot></div>
-					</div>
-					
-					<!-- Контентный слот для формы или других элементов -->
-					<div data-content-slot></div>
-				</div>
-			`
-
-			// Вставляем кнопку закрытия
-			dialog
-				.querySelector('[data-close-button-slot]')
-				?.append(createCloseButton())
-
-			// Если передан элемент (например, форма) — добавляем его внутрь контента
-			if (slot) {
-				dialog.querySelector('[data-content-slot]')?.append(slot)
-			}
-
-			// Добавляем диалог в конец body
-			document.body.append(dialog)
-
-			// Добавляем слушатель клавиши Escape при каждом открытии
-			document.addEventListener('keydown', closeByEsc)
-		})
+		trigger.addEventListener('click', open)
 	}
 
 	/**
@@ -109,6 +70,48 @@ export function createDialog(
 		}
 	}
 
+	function open() {
+		// Создаём контейнер для диалога
+		const dialog = document.createElement('div')
+
+		// Устанавливаем базовые атрибуты и классы для затемнения фона и центрирования окна
+		dialog.setAttribute('id', 'dialog')
+		dialog.setAttribute(
+			'class',
+			'fixed inset-0 bg-slate-600/70 flex items-center justify-center',
+		)
+
+		// Вставляем разметку модального окна
+		dialog.innerHTML = `
+				<div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+					<!-- Заголовок и кнопка закрытия -->
+					<div class="flex justify-between items-center mb-6">
+						<h2 class="text-2xl">Добавить организацию</h2>
+						<div data-close-button-slot></div>
+					</div>
+					
+					<!-- Контентный слот для формы или других элементов -->
+					<div data-content-slot></div>
+				</div>
+			`
+
+		// Вставляем кнопку закрытия
+		dialog
+			.querySelector('[data-close-button-slot]')
+			?.append(createCloseButton())
+
+		// Если передан элемент (например, форма) — добавляем его внутрь контента
+		if (slot) {
+			dialog.querySelector('[data-content-slot]')?.append(slot)
+		}
+
+		// Добавляем диалог в конец body
+		document.body.append(dialog)
+
+		// Добавляем слушатель клавиши Escape при каждом открытии
+		document.addEventListener('keydown', closeByEsc)
+	}
+
 	/**
 	 * Закрывает диалог при нажатии клавиши Escape.
 	 * Добавляется при открытии и удаляется после закрытия.
@@ -118,5 +121,5 @@ export function createDialog(
 	}
 
 	// Возвращаем публичный API
-	return { close }
+	return { close, open }
 }

@@ -3,7 +3,8 @@ import { createSearch } from './core/search.ts'
 import { createTable } from './core/table.ts'
 import { createPagination } from './core/pagination.ts'
 import { createDialog } from './core/dialog.ts'
-import { createForm } from './core/form.ts'
+import { createForm } from './core/organization-form.ts'
+import { fillOrganization } from './utils/organization.ts'
 import { data } from './data.ts'
 import type { Organization, TableHeading } from './types.ts'
 
@@ -36,6 +37,7 @@ document.querySelector<HTMLDivElement>('#application')!.innerHTML = `
  * Каждый объект описывает столбец: ключ данных, заголовок и признак сортировки.
  */
 const headings: TableHeading<Organization>[] = [
+	{ key: 'id', label: 'ID', sortable: true },
 	{ key: 'name', label: 'Название', sortable: true },
 	{ key: 'directorFullName', label: 'ФИО директора', sortable: true },
 	{ key: 'tel', label: 'Номер телефона' },
@@ -47,17 +49,20 @@ const headings: TableHeading<Organization>[] = [
  * Создание таблицы организаций.
  * Возвращает API с методами управления данными (например, setItems, prependItem).
  */
-const table = createTable<Organization>(
-	'[data-table]',
-	headings,
-	{
-		onDelete: (rowIndex: number) => {
-			data.splice(rowIndex, 1)
-			pagination.setItems(data)
-			table.setItems(pagination.getItems())
-		},
+const table = createTable<Organization>('[data-table]', headings, {
+	onDelete: (uuid: string) => {
+		const itemIndex = data.findIndex((item) => item.id === uuid)
+
+		if (itemIndex !== -1) {
+			data.splice(itemIndex, 1)
+			setItems(data)
+		}
+	},
+	onCellClick(item) {
+		form.setForm(item)
+		dialog.open()
 	}
-)
+})
 
 /**
  * Инициализация поисковой строки.
@@ -97,40 +102,35 @@ const pagination = createPagination(
 	},
 )
 
-const form = createForm((formData) => {
-	// Базовый шаблон новой организации
-	const organization: Organization = {
-		name: '',
-		directorFullName: '',
-		tel: '',
-		address: {
-			city: '',
-			street: '',
-			house: '',
-		},
-	}
+const form = createForm({
+	onSubmit: (formData, isEdit) => {
+		if (isEdit) {
+			const editableIndex = data.findIndex((item) => item.id === formData.get('id'))
 
-	// Проход по полям формы и сбор данных
-	formData.forEach((value, key) => {
-		// Если поле относится к адресу — записываем внутрь address
-		if (['city', 'street', 'house'].includes(key)) {
-			organization.address[key as keyof Organization['address']] =
-				value as string
-		} else {
-			// Иначе — добавляем как обычное свойство
-			organization[key as keyof Omit<Organization, 'address'>] = value as any
+			if (editableIndex !== -1) {
+				data[editableIndex] = fillOrganization(formData, data[editableIndex])
+				setItems(data)
+			}
+
+			dialog.close()
+			return
 		}
-	})
 
-	// Добавляем новую организацию в начало таблицы
-	data.unshift(organization)
+		// Добавляем новую организацию в начало таблицы
+		data.unshift(fillOrganization(formData))
+
+		setItems(data)
+
+		// Закрываем диалог
+		dialog.close()
+	},
+})
+
+const dialog = createDialog('[data-add-organization]', form.form, () => {
+	form.form.reset()
+})
+
+function setItems(data: Organization[]) {
 	pagination.setItems(data)
 	table.setItems(pagination.getItems())
-
-	// Закрываем диалог
-	dialog.close()
-})
-
-const dialog = createDialog('[data-add-organization]', form, () => {
-	form.reset()
-})
+}
