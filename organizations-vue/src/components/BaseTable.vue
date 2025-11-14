@@ -13,6 +13,10 @@ const { items, headings } = defineProps<{
 
 defineSlots<Slots>()
 
+const emit = defineEmits<{
+	(event: 'cell-click', data: T): void
+}>()
+
 const sortKey = ref<keyof T | null>(null)
 const sortOrder = ref<SortOrder>('asc')
 
@@ -93,6 +97,7 @@ function doSort(key: keyof T) {
 					v-for="(heading, cellIndex) in headings"
 					:key="`cell-${heading.key as string}-${cellIndex}`"
 					class="border border-neutral-200 p-4"
+					@click="emit('cell-click', item)"
 				>
 					<slot :name="heading.key" :data="item[heading.key]">
 						{{ item[heading.key] }}

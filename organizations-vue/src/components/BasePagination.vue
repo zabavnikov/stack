@@ -1,46 +1,66 @@
 <script setup lang="ts" generic="T">
 import { computed, ref } from 'vue'
 
-const { items = [], perPage = 2 } = defineProps<{
+/**
+ * Пропсы:
+ * - items: список элементов для пагинации
+ * - perPage: количество элементов на странице (по умолчанию 5)
+ */
+const { items = [], perPage = 5 } = defineProps<{
 	items: T[]
 	perPage?: number
 }>()
 
+// Текущая страница
 const currentPage = ref(1)
 
-// Общее количество страниц
+/**
+ * Общее количество страниц.
+ * Округляем вверх, чтобы вместить все элементы.
+ */
 const pages = computed(() => Math.ceil(items.length / perPage))
 
-// Элементы текущей страницы
+/**
+ * Элементы текущей страницы.
+ * Вычисляются реактивно через slice().
+ */
 const getItems = computed<T[]>(() => {
 	const from = (currentPage.value - 1) * perPage
 	const to = currentPage.value * perPage
 	return items.slice(from, to)
 })
 
-// Переход на страницу
+/**
+ * Переход на конкретную страницу.
+ * Проверяем, что страница находится в допустимых пределах.
+ */
 function goToPage(page: number) {
 	if (page >= 1 && page <= pages.value) {
 		currentPage.value = page
 	}
 }
 
-// Следующая страница
+/**
+ * Переход на следующую страницу.
+ */
 function nextPage() {
 	if (currentPage.value < pages.value) currentPage.value++
 }
 
-// Предыдущая страница
+/**
+ * Переход на предыдущую страницу.
+ */
 function previousPage() {
 	if (currentPage.value > 1) currentPage.value--
 }
 </script>
 
+
 <template>
 	<div class="space-y-4">
 		<slot :items="getItems" />
 
-		<ul class="flex gap-2 items-center">
+		<ul v-if="items.length > 0" class="flex gap-2 items-center">
 			<li>
 				<button
 					@click="previousPage"

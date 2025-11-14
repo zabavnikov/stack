@@ -2,53 +2,182 @@ import type { Organization } from './types.ts'
 
 export const data: Organization[] = [
 	{
-		name: "ООО Ромашка",
-		directorFullName: "Иванов Иван Иванович",
-		tel: "+7 900 123 45 67",
-		address: {
-			city: "Москва",
-			street: "Тверская",
-			house: "10"
-		}
+		id: '7fa9b4e4-4e5a-4c59-9c5d-9be60df214a1',
+		name: 'ООО Ромашка',
+		directorFullName: 'Иванов Иван Иванович',
+		tel: '+7 900 123 45 67',
+		address: { city: 'Москва', street: 'Тверская', house: '10' },
 	},
 	{
-		name: "АО ТехноПром",
-		directorFullName: "Петров Пётр Петрович",
-		tel: "+7 921 555 10 20",
+		id: 'c1a4c7b1-fcb6-4c0d-b577-62a8a39d35db',
+		name: 'АО ТехноПром',
+		directorFullName: 'Петров Пётр Петрович',
+		tel: '+7 921 555 10 20',
 		address: {
-			city: "Санкт-Петербург",
-			street: "Невский проспект",
-			house: "28"
-		}
+			city: 'Санкт-Петербург',
+			street: 'Невский проспект',
+			house: '28',
+		},
 	},
 	{
-		name: "ИП Смирнова",
-		directorFullName: "Смирнова Анна Сергеевна",
-		tel: "+7 977 888 77 66",
-		address: {
-			city: "Казань",
-			street: "Баумана",
-			house: "15А"
-		}
+		id: 'a8c4e3a2-f1c3-46ea-9b9f-4e7bc999eac3',
+		name: 'ИП Смирнова',
+		directorFullName: 'Смирнова Анна Сергеевна',
+		tel: '+7 977 888 77 66',
+		address: { city: 'Казань', street: 'Баумана', house: '15А' },
 	},
 	{
-		name: "ООО СтройСервис",
-		directorFullName: "Кузнецов Олег Викторович",
-		tel: "+7 905 222 33 44",
-		address: {
-			city: "Екатеринбург",
-			street: "Ленина",
-			house: "50"
-		}
+		id: '4e19c6c0-5db3-4abc-88f2-bf6fbb8c4ce4',
+		name: 'ООО СтройСервис',
+		directorFullName: 'Кузнецов Олег Викторович',
+		tel: '+7 905 222 33 44',
+		address: { city: 'Екатеринбург', street: 'Ленина', house: '50' },
 	},
 	{
-		name: "ЗАО АльфаТрейд",
-		directorFullName: "Соколова Мария Игоревна",
-		tel: "+7 916 444 55 66",
-		address: {
-			city: "Новосибирск",
-			street: "Красный проспект",
-			house: "101"
-		}
-	}
+		id: '1bf2c6de-9284-4d80-a78f-9f3f716ea0f7',
+		name: 'ЗАО АльфаТрейд',
+		directorFullName: 'Соколова Мария Игоревна',
+		tel: '+7 916 444 55 66',
+		address: { city: 'Новосибирск', street: 'Красный проспект', house: '101' },
+	},
+	{
+		id: 'c00ca8c0-8940-4a33-8f3a-5ad8ec98e64d',
+		name: 'ООО БетаСофт',
+		directorFullName: 'Алексеев Дмитрий Павлович',
+		tel: '+7 901 432 10 09',
+		address: { city: 'Москва', street: 'Арбат', house: '22' },
+	},
+	{
+		id: 'd9b6ef8a-a0d0-4c7d-9c46-39099cf8ab5a',
+		name: 'ООО ИнжСтрой',
+		directorFullName: 'Григорьев Артём Андреевич',
+		tel: '+7 930 554 33 22',
+		address: { city: 'Пермь', street: 'Куйбышева', house: '7' },
+	},
+	{
+		id: '1f60f65b-e6f0-41f7-9121-1bb76c41b4ce',
+		name: 'ИП Волкова',
+		directorFullName: 'Волкова Елена Николаевна',
+		tel: '+7 950 606 77 11',
+		address: { city: 'Уфа', street: 'Октября', house: '48' },
+	},
+	{
+		id: '55e34119-5363-4c8c-9ce7-668a8c68db9a',
+		name: 'ООО ЛайтТрейд',
+		directorFullName: 'Никитин Сергей Олегович',
+		tel: '+7 964 110 22 33',
+		address: { city: 'Красноярск', street: 'Мира', house: '12Б' },
+	},
+	{
+		id: '4c903a20-1ad1-4f7c-a715-f63564a499e1',
+		name: 'АО СибЭнерго',
+		directorFullName: 'Фёдоров Алексей Сергеевич',
+		tel: '+7 922 700 55 66',
+		address: { city: 'Омск', street: 'Ленина', house: '85' },
+	},
+	{
+		id: '2b90725f-44fc-4a19-9f1c-bd9f98e65c78',
+		name: 'ООО ГринМаркет',
+		directorFullName: 'Крылова Марина Владимировна',
+		tel: '+7 999 111 00 22',
+		address: { city: 'Ростов-на-Дону', street: 'Большая Садовая', house: '60' },
+	},
+	{
+		id: 'f3f0b86b-f520-4e69-9f98-41c94d8d2ff7',
+		name: 'ООО АртМедиа',
+		directorFullName: 'Морозов Виктор Иванович',
+		tel: '+7 913 210 44 55',
+		address: { city: 'Томск', street: 'Советская', house: '33' },
+	},
+	{
+		id: 'fcfe8a81-121d-4b7d-bc3f-175de6de9719',
+		name: 'ООО ЛогистикСервис',
+		directorFullName: 'Егоров Николай Николаевич',
+		tel: '+7 918 321 77 88',
+		address: { city: 'Краснодар', street: 'Северная', house: '27' },
+	},
+	{
+		id: 'af5acbf0-7f0c-42fb-8788-c60c02b2b4cd',
+		name: 'ИП Медведева',
+		directorFullName: 'Медведева Анастасия Викторовна',
+		tel: '+7 906 654 32 11',
+		address: { city: 'Воронеж', street: 'Плехановская', house: '14' },
+	},
+	{
+		id: '3c30188b-9680-4e41-894b-0ab81c3f7e93',
+		name: 'ООО ТехАгро',
+		directorFullName: 'Попов Валентин Григорьевич',
+		tel: '+7 902 100 20 30',
+		address: { city: 'Самара', street: 'Молодогвардейская', house: '77' },
+	},
+	{
+		id: 'f8142448-e1c8-470a-ab68-c5ffa8f3e7d8',
+		name: 'АО СканПром',
+		directorFullName: 'Михайлов Александр Павлович',
+		tel: '+7 960 555 44 33',
+		address: { city: 'Тюмень', street: 'Республики', house: '40' },
+	},
+	{
+		id: '3373d390-ff9a-4c5f-b20c-03d57cf98a76',
+		name: 'ООО Вектор',
+		directorFullName: 'Гусева Елизавета Андреевна',
+		tel: '+7 915 876 99 00',
+		address: { city: 'Иркутск', street: 'Карла Маркса', house: '9' },
+	},
+	{
+		id: '4ae8564f-bab5-4bb2-8c44-c179bd87e655',
+		name: 'ИП Николаев',
+		directorFullName: 'Николаев Павел Денисович',
+		tel: '+7 985 203 40 80',
+		address: { city: 'Челябинск', street: 'Комсомольская', house: '62' },
+	},
+	{
+		id: 'd9609b75-e9db-4a47-bdf0-a315c0ac3e19',
+		name: 'ООО ФрешФуд',
+		directorFullName: 'Зайцева Ольга Игоревна',
+		tel: '+7 991 700 55 11',
+		address: { city: 'Калуга', street: 'Гагарина', house: '8' },
+	},
+	{
+		id: '8d15b313-15ac-47bc-a53d-89f43a561bb0',
+		name: 'ООО НеоТех',
+		directorFullName: 'Киселёв Артём Владимирович',
+		tel: '+7 925 403 22 66',
+		address: { city: 'Белгород', street: 'Победы', house: '17' },
+	},
+	{
+		id: '76d961a7-fc43-4ce0-98f9-a4e258c3c76e',
+		name: 'АО ГлобалСофт',
+		directorFullName: 'Тихонов Михаил Юрьевич',
+		tel: '+7 908 201 99 77',
+		address: { city: 'Сочи', street: 'Курортный проспект', house: '95' },
+	},
+	{
+		id: 'b68a88f7-f528-4a6f-9f2a-668fb9d8127f',
+		name: 'ООО ЭкоТрейд',
+		directorFullName: 'Филиппова Екатерина Андреевна',
+		tel: '+7 963 140 55 77',
+		address: { city: 'Рязань', street: 'Почтовая', house: '23' },
+	},
+	{
+		id: 'c73653e3-b190-49bb-bde1-9601e6d32505',
+		name: 'ООО МастерПро',
+		directorFullName: 'Васильев Денис Олегович',
+		tel: '+7 920 314 88 20',
+		address: { city: 'Барнаул', street: 'Пролетарская', house: '12' },
+	},
+	{
+		id: 'd42389b5-050b-4b43-b050-d5e9b0e6c894',
+		name: 'ООО СибЛогистик',
+		directorFullName: 'Романов Евгений Алексеевич',
+		tel: '+7 950 720 30 60',
+		address: { city: 'Кемерово', street: 'Советский проспект', house: '73' },
+	},
+	{
+		id: 'e1e295e6-8016-4067-86d1-8cac8c7fa0bc',
+		name: 'ИП Андреева',
+		directorFullName: 'Андреева Дарья Никитична',
+		tel: '+7 902 333 55 44',
+		address: { city: 'Тула', street: 'Фрунзе', house: '6' },
+	},
 ]

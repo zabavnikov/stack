@@ -3,12 +3,25 @@ import BaseButton from './components/BaseButton.vue'
 import BaseInput from './components/BaseInput.vue'
 import BaseTable from './components/BaseTable.vue'
 import BasePagination from './components/BasePagination.vue'
-import AddOrganizationDialog from './components/dialogs/AddOrganizationDialog.vue'
+import BaseDialog from './components/BaseDialog.vue'
+import OrganizationForm from './components/OrganizationForm.vue'
 import { useOrganizationTable } from './composables/organization-table.ts'
 import { arrayToString } from './utils/array-to-string.ts'
+import { nextTick, ref } from 'vue'
+import type { ComponentExposed } from 'vue-component-type-helpers'
+import type { Organization } from './types.ts'
 
-const { headings, items, searchQuery, doDelete, doPrepend } =
+const { headings, items, searchQuery, doDelete, doPrepend, doUpdate } =
 	useOrganizationTable()
+
+const dialog = ref<ComponentExposed<typeof BaseDialog>>()
+const form = ref<ComponentExposed<typeof OrganizationForm>>()
+
+async function onCellClick(data: Organization) {
+	dialog.value?.toggle()
+	await nextTick()
+	form.value?.setForm(data)
+}
 </script>
 
 <template>
@@ -20,16 +33,26 @@ const { headings, items, searchQuery, doDelete, doPrepend } =
 					type="search"
 					placeholder="Найти по ФИО"
 				/>
-				<AddOrganizationDialog @submit="doPrepend">
+				<BaseDialog ref="dialog">
 					<template #trigger="{ toggle }">
 						<BaseButton @click="toggle">Добавить</BaseButton>
 					</template>
-				</AddOrganizationDialog>
+					<OrganizationForm
+						ref="form"
+						@created="doPrepend"
+						@updated="doUpdate"
+						@submit="dialog?.toggle()"
+					/>
+				</BaseDialog>
 			</div>
 
 			<BasePagination :items="items">
 				<template #default="{ items }">
-					<BaseTable :headings="headings" :items="items">
+					<BaseTable
+						:headings="headings"
+						:items="items"
+						@cell-click="onCellClick"
+					>
 						<template #address="{ data }">
 							{{ arrayToString([data.city, data.street, data.house]) }}
 						</template>
