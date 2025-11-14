@@ -7,15 +7,14 @@ import BaseDialog from './components/BaseDialog.vue'
 import OrganizationForm from './components/OrganizationForm.vue'
 import { useOrganizationTable } from './composables/organization-table.ts'
 import { arrayToString } from './utils/array-to-string.ts'
-import { nextTick, ref } from 'vue'
-import type { ComponentExposed } from 'vue-component-type-helpers'
+import { nextTick, useTemplateRef } from 'vue'
 import type { Organization } from './types.ts'
 
 const { headings, items, searchQuery, doDelete, doPrepend, doUpdate } =
 	useOrganizationTable()
 
-const dialog = ref<ComponentExposed<typeof BaseDialog>>()
-const form = ref<ComponentExposed<typeof OrganizationForm>>()
+const dialog = useTemplateRef('dialog')
+const form = useTemplateRef('form')
 
 async function onCellClick(data: Organization) {
 	dialog.value?.toggle()
